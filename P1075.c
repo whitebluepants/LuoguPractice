@@ -1,5 +1,5 @@
-#include <stdio.h.>
-#include <math.>
+#include <stdio.h>
+#include <math.h>
 int main()
 {
     int n,max = -1,temp;
@@ -17,7 +17,7 @@ int main()
             max = temp;
         }
     }
-    printf("%d",temp):
+    printf("%d",temp);
 
     return 0;
 }
