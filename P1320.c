@@ -3,37 +3,33 @@
 
 int main()
 {
-    char m[201][201] = {};
+    char m[40000],b[201];
     char t;
-    int i,count = 0;
+    int count = 0;
     
-    for(i = 0;i < 201;i ++)
-    {
-        gets(m[i]);
-        if(strcmp(m[i],"\0") == 0)
-        {
-            break;
-        }
-    }
-    t = m[0][0];
-    printf("%d ",i);
+    scanf("%s",m);
+    int n = strlen(m);
 
-    for(int j = 0;j <= i;j ++)
+    for(int i = 0;i < n - 1;i ++)
     {
-        for(int k = 0;k < i;k ++)
+        scanf("%s",b);
+        strcat(m,b);
+    }
+    printf("%d ",n);
+    t = '0';
+    for(int i = 0;i <= strlen(m);i ++)
+    {
+        if(m[i] == t)
         {
-            if(m[j][k] == t)
-            {
-                count ++;
-                t = m[j][k];
-            }
-            else
-            {
-                t = m[j][k];
-                printf("%d ",count);
-                count = 0;
-                count ++;
-            }
+            count ++;
+            t = m[i];
+        }
+        else
+        {
+            t = m[i];
+            printf("%d ",count);
+            count = 0;
+            count ++;
         }
     }
     return 0;
