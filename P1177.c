@@ -21,52 +21,46 @@ int read()
     }
     return f?-1*x:x;
 }
+
 void swap(int *a,int *b)
 {
     int temp = *a;
     *a = *b;
     *b = temp;
 }
-int part(int a[],int begin,int end)
-{
-    int mid = a[begin];
-    while(begin < end)
-    {
-        while(begin < end && mid <= a[end])
-        {
-            end --;
-        }
-        swap(&a[begin],&a[end]);
-        while(begin < end && mid >= a[begin])
-        {
-            begin ++;
-        }
-        swap(&a[begin],&a[end]);
-    }
-    return begin; 
-}
-void quicksort(int a[],int begin,int end,int k)
-{
-    if(begin - end > k)
-    {
-        int mid = part(a,begin,end);
-        quicksort(a,begin,mid - 1,k);
-        quicksort(a,mid + 1,end,k);
-    }
-}
-void quicksortimprove(int a[],int begin,int end,int k)
-{
-    quicksort(a,begin,end,k);
 
-    int temp,j;
-    for(int i = begin + 1;i <= end;i ++)
+void quicksort(int a[],int begin,int end)
+{
+    if(begin >= end)
     {
-        temp = a[i];
-        for(j = i;j > 0 && a[j - 1] > temp;j --)
+        return;
+    }
+    int mid = a[(begin + end) / 2];
+    int i = begin, j = end;
+    while(i <= j)   // = ?    (= 76ms != 88ms)
+    {
+        while(a[i] < mid)
         {
-            a[j] = a[j - 1];
+            i ++;
         }
-        a[j] = temp;
+        while(a[j] > mid)
+        {
+            j --;
+        }
+        if(i <= j)
+        {
+            swap(&a[i],&a[j]);
+            i ++;
+            j --;
+        }
+    }
+    if(begin < j)
+    {
+        quicksort(a,begin,j);
+    }
+    if(i < end)
+    {
+        quicksort(a,i,end);
     }
 }
 int main()
@@ -78,7 +72,7 @@ int main()
     {
         a[i] = read();
     }
-    quicksortimprove(a,0,n - 1,8);
+    quicksort(a,0,n - 1);
     for(int i = 0;i < n;i ++)
     {
         printf("%d ",a[i]);
