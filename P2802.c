@@ -17,7 +17,7 @@ void dfs(int a,int b)
     int nx,ny;
     for(int i = 0;i < 4;i ++)
     {
-        if(hp == 0)
+        if(hp == 1)
         {
             return;
         }
@@ -36,11 +36,12 @@ void dfs(int a,int b)
             if(ans[nx][ny] == 4)
             {
                 int temp = hp;
-                hp --;
-                if(hp == 0)
-                {
-                    return;
-                }
+                // hp --;
+                // if(hp == 0)
+                // {
+                //     hp ++;
+                //     return;
+                // }
                 hp = 6;
                 count ++;
                 dfs(nx,ny);
@@ -48,11 +49,11 @@ void dfs(int a,int b)
             }
             if(ans[nx][ny] == 3)
             {
-                hp --;
-                if(hp == 0)
-                {
-                    return;
-                }
+                // hp --;
+                // if(hp == 0)
+                // {
+                //     return;
+                // }
                 count ++;
                 if(count < min)
                 {
