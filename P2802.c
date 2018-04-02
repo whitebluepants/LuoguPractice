@@ -10,57 +10,44 @@ int read()
 }
 int n,m,count = 0,hp = 6,min = 999;
 int ans[9][9];
+int r[9][9] = {}; // record
 int dx[4] = {-1,0,0,1};
 int dy[4] = {0,-1,1,0};
-void dfs(int a,int b)
+void dfs(int a,int b,int hp,int time)
 {
+    if(hp == 0)
+    {
+        return;
+    }
+    if(ans[a][b] == 3)
+    {
+        if(time < min)
+        {
+            min = time;
+        }
+        return;
+    }
+
+    if(ans[a][b] == 4)
+    {
+        hp = 6;
+    }
+
     int nx,ny;
     for(int i = 0;i < 4;i ++)
     {
-        if(hp == 1)
-        {
-            return;
-        }
         nx = a + dx[i];
         ny = b + dy[i];
-        if(nx >= 0 && nx < n && ny >= 0 && ny < m)
+        
+        if(nx >= 0 && nx <= n && ny >= 0 && ny <= m)
         {
-            if(ans[nx][ny] == 1)
+            if(r[nx][ny] == 1 || ans[nx][ny] == 0)
             {
-                hp --;
-                count ++;
-                dfs(nx,ny);
-                hp ++;
-                count --;
+                continue;
             }
-            if(ans[nx][ny] == 4)
-            {
-                int temp = hp;
-                // hp --;
-                // if(hp == 0)
-                // {
-                //     hp ++;
-                //     return;
-                // }
-                hp = 6;
-                count ++;
-                dfs(nx,ny);
-                hp = temp;
-            }
-            if(ans[nx][ny] == 3)
-            {
-                // hp --;
-                // if(hp == 0)
-                // {
-                //     return;
-                // }
-                count ++;
-                if(count < min)
-                {
-                    min = count;
-                }
-                return;
-            }
+            r[nx][ny] = 1;
+            dfs(nx,ny,hp - 1,time + 1);
+            r[nx][ny] = 0;
         }
     }
 }
@@ -76,10 +63,11 @@ int main()
             if(ans[i][j] == 2)
             {
                 a = i,b = j;
+                r[a][b] = 1;
             }
         }
     }
-    dfs(a,b);
+    dfs(a,b,6,0);
 
     if(min == 999)
     {
