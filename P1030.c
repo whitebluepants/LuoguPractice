@@ -22,10 +22,10 @@ void dfs(int ms,int me,int rs,int re)
         if(mid[i] == back[re])
         {
             printf("%c",mid[i]);
-            dfs(ms,i - 1 , rs,i - 1);
-            dfs(i + 1,me , i,re - 1);
-            // dfs(ms,i - 1 , rs,i - 1 - ms + rs);
-            // dfs(i + 1,me , re + i - me,re - 1);
+            // dfs(ms,i - 1 , rs,i - 1);
+            // dfs(i + 1,me , i,re - 1);
+            dfs(ms,i - 1 , rs,i - 1 - ms + rs);
+            dfs(i + 1,me , re + i - me,re - 1);
             break;
         }
     }
