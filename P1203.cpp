@@ -14,93 +14,92 @@ int main()
     int n = read();
     char s[351] = {};
     scanf("%s",s);
-
     int max = -1;
-
-    int f = 1;
-    for(int i = 1;i < n;i ++)
+    int f = 0;
+    for(int i = 0;i < n - 1;i ++)
     {
-        if(s[i] != s[i - 1])
+        if(s[i] != s[i + 1])
         {
-            f = 0;
-            break;
+            f = 1;
         }
     }
-    if(f == 1)
+    if(f == 0)
     {
         printf("%d",n);
         return 0;
     }
-
+    
     for(int i = 0;i < n;i ++)
     {
-        int left = i - 1, right = i;
-        char l,r = s[right];
-        if(left < 0)
-        {
-            l = s[n - 1];
-        }
-        else
-        {
-            l = s[left];
-        }
-        left --,right ++;
+        int left = i - 1,right = i;
         if(left < 0)
         {
             left = n - 1;
         }
-        if(right >= n)
-        {
-            right = 0;
-        }
+        char l,r;
+        int flag1 = 0,flag2 = 0;
+        int count1 = 0,count2 = 0;
 
-        int count1 = 1;
-        if(l == 'w')
+        for(;flag2 != 3;right ++)
         {
-            for(;l == 'w';left --)
-            {
-                count1 ++;
-                l = s[left];
-                if(left < 0)
-                {
-                    left = n - 1;
-                }
-            }
-        }
-        for(;s[left] == 'w' || s[left] == l;left --)
-        {
-            count1 ++;
-            if(left < 0)
-            {
-                left = n - 1;
-            }
-        }
-        int count2 = 1;
-        if(r == 'w')
-        {
-            for(;r == 'w';right ++)
-            {
-                count2 ++;
-                r = s[right];
-                if(right >= n)
-                {
-                    right = 0;
-                }
-            }
-        }
-        for(;s[right] == 'w' || s[right] == r;right ++)
-        {
-            count2 ++;
             if(right >= n)
             {
                 right = 0;
             }
+            
+            if(s[right] == 'w')
+            {
+                count2 ++;
+            }
+            else if(flag2 == 0 && s[right] != 'w')
+            {
+                r = s[right];
+                flag2 = 1;
+                count2 ++;
+            }
+            else if(flag2 == 1 && s[right] == r)
+            {
+                count2 ++;
+            }
+            else
+            {
+                flag2 = 3;
+            }
         }
+
+        for(;flag1 != 3 && left != right - 2;left --)
+        {
+            if(left < 0)
+            {
+                left = n - 1;
+            }
+            
+            if(s[left] == 'w')
+            {
+                count1 ++;
+            }
+            else if(flag1 == 0 && s[left] != 'w')
+            {
+                l = s[left];
+                flag1 = 1;
+                count1 ++;
+            }
+            else if(flag1 == 1 && s[left] == l)
+            {
+                count1 ++;
+            }
+            else
+            {
+                flag1 = 3;
+            }
+        }
+
         if(count1 + count2 > max)
         {
             max = count1 + count2;
         }
     }
+
     printf("%d",max);
 
     return 0;
