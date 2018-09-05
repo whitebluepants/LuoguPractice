@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <queue>
+#define INF 99999999
 using namespace std;
 int read()
 {
@@ -10,50 +11,73 @@ int read()
     while(ch >= '0' && ch <= '9'){x = x * 10 + ch - '0';ch = getchar();}
     return f?x:x*-1;
 }
+struct node
+{
+    int next,to,dis;
+};
 struct edge
 {
-    int to;
-    int dis;
-    edge(int tt,int dd) : to(tt), dis(dd) {}
-};
-struct cmp
-{
-    bool operator () (edge a,edge b)
+    int to,dis;
+    edge(int tt,int dd){to = tt,dis = dd;}
+    bool operator < (const edge &a) const
     {
-        return a.dis > b.dis;
+        return dis > a.dis;
     }
 };
-vector<edge> e[5001];
-bool visited[5001];
-int n,m;
+node e[400002];
+int head[5001];
+int dis[5001];
+bool vis[5001];
+int n,m,num;
+void addedge(int from,int to,int dis)
+{
+    e[++ num].next = head[from];
+    e[num].to = to;
+    e[num].dis = dis;
+    head[from] = num;
+}
 int prim(int s)
 {
-    int sum = 0;
-    visited[s] = true;
-    priority_queue<edge,vector<edge>,cmp> pq;
-
-    for(int i = 0;i < e[s].size();i ++)
-    {
-        pq.push(e[s][i]);
-    }
+    dis[s] = 0;
+    int cnt = 0,sum = 0;
+    priority_queue<edge> pq;
+    pq.push(edge(s,0));
 
     while(pq.size())
     {
         edge t = pq.top();
         pq.pop();
-        
-        if(visited[t.to] == true)
+
+        int u = t.to,ud = t.dis;
+
+        if(vis[u])
         {
             continue;
         }
-        sum += t.dis;
-        visited[t.to] = true;
-        
-        for(int i = 0;i < e[t.to].size();i ++)
+        vis[u] = true;
+        cnt ++;
+        sum += ud;
+        if(cnt == n)
         {
-            pq.push(e[t.to][i]);
+            break;
+        }
+
+        for(int i = head[u];i;i = e[i].next)
+        {
+            int v = e[i].to,d = e[i].dis;
+            if(!vis[v] && dis[v] > d)
+            {
+                dis[v] = d;
+                pq.push(edge(v,d));
+            }
         }
     }
+
+    if(cnt != n)
+    {
+        sum = -1;
+    }
+
     return sum;
 }
 int main()
@@ -63,29 +87,25 @@ int main()
     for(int i = 0;i < m;i ++)
     {
         int u = read(),v = read(),dis = read();
+        addedge(u,v,dis);
+        addedge(v,u,dis);
+    }
 
-        e[u].push_back(edge(v,dis));  
-        e[v].push_back(edge(u,dis));
+    for(int i = 1;i <= n;i ++)
+    {
+        dis[i] = INF;
     }
 
     int sum = prim(1);
 
-    for(int i = 1;i <= n;i ++)
-    {
-        if(visited[i] == false)
-        {
-            sum = -1;
-            break;
-        }
-    }
     if(sum == -1)
     {
-        printf("orz\n");
+        printf("orz");
     }
     else
     {
-        printf("%d\n",sum);
+        printf("%d",sum);
     }
-
+    
     return 0;
 }
