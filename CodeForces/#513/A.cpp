@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <algorithm>
 using namespace std;
 int read()
 {
@@ -10,26 +9,33 @@ int read()
 	while (ch >= '0' && ch <= '9') { x = x * 10 + ch - '0'; ch = getchar(); }
 	return f ? x : x * -1;
 }
-int ans[10005];
+int a[10];
 int main()
 {
     int n = read();
-
     for(int i = 0;i < n;i ++)
     {
-        ans[i] = read();
+        int t;
+        scanf("%1d",&t);
+        a[t] ++;
     }
-
-    sort(ans,ans + n);
-
-    double count = ans[0] * 1.0 / 2 + ans[1] * 1.0 / 2;
-
-    for(int i = 2;i < n;i ++)
+    
+    if(a[8] == 0 || n < 11)
     {
-        count = count / 2 + ans[i] * 1.0 / 2;
+        printf("0");
+        return 0;
     }
+    
+    int max = n / 11;
 
-    printf("%d",(int)count);
+    if(a[8] >= max)
+    {
+        printf("%d",max);
+    }
+    else
+    {
+        printf("%d",a[8]);
+    }
 
     return 0;
 }
