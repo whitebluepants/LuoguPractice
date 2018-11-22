@@ -91,7 +91,10 @@ void insert(Hash H,string a)
 
     if(!p)
     {
-        p = (List)malloc(sizeof(struct node));
+        // 因为结构体内有string类型 使用malloc能分配空间 但不会给string调用构造函数
+        // 只能用c++的new
+        // p = (List)malloc(sizeof(struct node));
+        p = new node();
         p->s = a;
         p->next = H->list[pos].next;
         p->count = 1;
